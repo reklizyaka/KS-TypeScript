@@ -29,6 +29,9 @@ import Drawer from "../components/Drawer.vue";
 import ListNotes from "@/components/ListNotes.vue";
 
 import { Vue, Component } from "vue-property-decorator";
+import { Getter, Action, namespace } from "vuex-class";
+
+const tasks = namespace("tasks");
 
 interface Note {
   id?: any;
@@ -45,6 +48,13 @@ export default class Home extends Vue {
   public editNote: Note | null | undefined;
   public userEmail: string;
   public parsedString: string;
+
+  @tasks.Action actionSaveTask: any;
+  @tasks.Action actionRemoveTask: any;
+  @tasks.Action actionRemoveAll: any;
+  @tasks.Action actionEditTask: any;
+  @tasks.Getter getKokoko: any;
+  @tasks.Getter GET_TASK: any;
 
   constructor() {
     super();
@@ -68,6 +78,12 @@ export default class Home extends Vue {
     };
 
     this.notes.push(newNote);
+    this.GET_TASK;
+    console.log(this.GET_TASK);
+    console.log(this.getKokoko);
+    this.actionSaveTask(this.notes);
+    this.GET_TASK;
+
     this.save();
     this.toggleModal(false);
   }
@@ -80,7 +96,11 @@ export default class Home extends Vue {
       const id = this.editNote.id;
       const index = this.getNoteById(id);
       this.notes.splice(index, 1, { id, ...note });
-      // this.setEditMode(null);
+      this.setEditMode(null);
+      this.GET_TASK;
+      this.actionEditTask(index, note);
+      console.log(note);
+
       this.save();
       this.toggleModal(false);
     }
@@ -88,13 +108,16 @@ export default class Home extends Vue {
   public remove(id: string) {
     const index = this.getNoteById(id);
     this.notes.splice(index, 1);
+    this.actionRemoveTask(index, 1);
     this.save();
   }
   public save() {
     localStorage.setItem("notes", JSON.stringify(this.notes));
   }
   public logout() {
+    this.actionRemoveAll(this.notes);
     localStorage.removeItem("login");
+    localStorage.removeItem("notes");
     this.$router.push({ path: "/login", name: "login" });
   }
   public getNoteById(id: string) {

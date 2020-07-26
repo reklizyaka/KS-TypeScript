@@ -25,21 +25,29 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 //
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { Getter, Action, namespace } from "vuex-class";
+
+const login = namespace("login");
 
 @Component({})
-export default class Login extends Vue {
+class Login extends Vue {
   public errors: string[];
   public email: string;
+
+  @login.Action actionSaveMail: any;
+  @login.Getter getEmail: any;
+  created() {
+    console.log(this.getEmail);
+  }
 
   constructor() {
     super();
     this.errors = [];
     this.email = "";
   }
-
   public checkForm() {
     this.errors = [];
     if (!this.email) {
@@ -48,6 +56,9 @@ export default class Login extends Vue {
       this.errors.push("valid email required.");
     }
     if (!this.errors.length) {
+      this.actionSaveMail(this.email);
+      console.log(this.getEmail);
+
       this.$router.push({ path: "/", name: "home" });
       localStorage.setItem("login", this.email);
     }
@@ -57,6 +68,7 @@ export default class Login extends Vue {
     return re.test(email);
   }
 }
+export default Login;
 </script>
 
 <style scoped>

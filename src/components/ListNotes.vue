@@ -18,7 +18,7 @@ import Button from "./Button.vue";
 import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component({
-  components: { Button }
+  components: { Button },
 })
 export default class ListNotes extends Vue {
   @Prop() notes!: [];
