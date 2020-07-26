@@ -7,7 +7,12 @@
       </div>
       <div class="task-board">
         <div class="task-card">
-          <ListNotes :notes="notes" :onEdit="setEditMode" :onRemove="remove" />
+          <ListNotes
+            :notes="notes"
+            :onEdit="setEditMode"
+            v-model="currentTitle"
+            :onRemove="remove"
+          />
         </div>
         <button class="add-btn" @click="toggleModal(true)">+</button>
       </div>
@@ -55,6 +60,8 @@ export default class Home extends Vue {
   @tasks.Action actionEditTask: any;
   @tasks.Getter getKokoko: any;
   @tasks.Getter GET_TASK: any;
+  @tasks.Action actionGetTitle: any;
+  @tasks.Action actionSetTitle: any;
 
   constructor() {
     super();
@@ -69,6 +76,18 @@ export default class Home extends Vue {
       this.$router.push({ path: "/login", name: "login" });
     }
   }
+
+  get currentTitle() {
+    return this.actionGetTitle(this.id).title;
+  }
+  set currentTitle(value: any) {
+    const obj = {
+      id: shortid(),
+      data: value,
+    };
+    this.actionSetTitle(obj);
+  }
+
   public add(note: object) {
     const { title, description }: any = note;
     const newNote: Note = {

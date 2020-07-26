@@ -24,16 +24,17 @@ const mutations = {
   SET_TASK(state: any, task: any) {
     state.task = task;
   },
-  SET_TITLE(state: any, { id, data }) {
-    state.task.forEach((element: any) => {
-      if (element.id === id) {
-        element.title = data;
-      }
-    });
-  },
-  GET_TITLE(state:any) => (id: any) => {
+  // SET_TITLE(state: any, { id, data }) {
+  //   state.task.forEach((element: any) => {
+  //     if (element.id === id) {
+  //       element.title = data;
+  //     }
+  //   });
+  // },
+  GET_TITLE(state:any) { (id: any) } => {
     state.task.find((element: any) => element.id === id)
   };
+};
 
 const actions = {
   actionRemoveTask(context: any, task: any) {

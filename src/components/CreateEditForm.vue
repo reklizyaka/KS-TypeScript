@@ -13,21 +13,22 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class CreateEditForm extends Vue {
-  // @Prop() value: Object;
+  @Prop() title!: String;
+  @Prop() description!: String;
   @Prop() onSubmit!: Function;
 
   public note: object;
-  public title: string;
-  public description: string;
+  // public title: string;
+  // public description: string;
 
   constructor() {
     super();
     this.note = {
-      // title: this.value ? this.value.title : "",
-      // description: this.value ? this.value.description : "",
+      title: this.title,
+      description: this.description,
     };
-    this.title = "";
-    this.description = "";
+    // this.title = "";
+    // this.description = "";
   }
 }
 </script>

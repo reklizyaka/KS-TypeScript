@@ -4,7 +4,8 @@
     <div class="drawer-container">
       <div class="drawer-body">
         <CreateEditForm
-          :value="data"
+          :title="data ? data.title : ''"
+          :description="data ? data.description : ''"
           :onSubmit="data ? editAction : addAction"
         />
       </div>
