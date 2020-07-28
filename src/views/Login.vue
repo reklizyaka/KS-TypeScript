@@ -38,10 +38,7 @@ class Login extends Vue {
   public email: string;
 
   @login.Action actionSaveMail: any;
-  @login.Getter getEmail: any;
-  created() {
-    console.log(this.getEmail);
-  }
+  created() {}
 
   constructor() {
     super();
@@ -57,7 +54,6 @@ class Login extends Vue {
     }
     if (!this.errors.length) {
       this.actionSaveMail(this.email);
-      console.log(this.getEmail);
 
       this.$router.push({ path: "/", name: "home" });
       localStorage.setItem("login", this.email);

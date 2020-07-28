@@ -1,29 +1,46 @@
 <template>
   <ol class="task-list">
-    <li v-bind:key="note.id" v-for="note in notes">
-      <section clss="task-btns">
-        <Button @click="onEdit(note.id)" class="edit-btn" />
-        <Button @click="onRemove(note.id)" class="remove-btn" />
+    <li v-bind:key="task.id" v-for="task in tasks">
+      <section class="task-btns">
+        <Button @click="onEdit(task.id)" class="edit-btn" />
+        <Button @click="onRemove(task.id)" class="remove-btn" />
       </section>
       <hr />
       <div class="task-content">
-        <h3 class="task-title">{{ note.title }}</h3>
-        <p class="task-desc">{{ note.description }}</p>
+        <h3 class="task-title">{{ task.title }}</h3>
+        <p class="task-desc">{{ task.description }}</p>
       </div>
     </li>
   </ol>
 </template>
+
 <script lang = 'ts'>
 import Button from "./Button.vue";
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { Getter, Action, namespace } from "vuex-class";
+import { mapState } from "vuex";
+
+const tasks = namespace("tasks");
 
 @Component({
   components: { Button },
+  computed: {
+    ...mapState("tasks", ["tasks"]),
+  },
 })
 export default class ListNotes extends Vue {
-  @Prop() notes!: [];
-  @Prop() onRemove!: Function;
-  @Prop() onEdit!: Function;
+  @tasks.Action actionRemoveTask: any;
+  @tasks.Action actionEditTask: any;
+  @tasks.Action actionToggleModal: any;
+
+  onRemove(id: string) {
+    this.actionRemoveTask(id);
+  }
+
+  onEdit(id: string) {
+    this.actionEditTask(id);
+    this.actionToggleModal(true);
+  }
 }
 </script>
 

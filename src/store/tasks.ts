@@ -1,59 +1,69 @@
+import { ITask } from "@/interfaces";
+
+const saveToLS = (state: any) =>
+  localStorage.setItem("notes", JSON.stringify(state.tasks));
+
 const state = {
-  task: [],
-  ololo: "kokoko",
-  // drawerTitle: "",
-  // drawerDescription: "",
+  tasks: [],
+  isShowModal: false,
+  editTask: null,
 };
-const getters = {
-  GET_TASK: (state: any) => state.task,
-  // getDrawerTitle: (state: any) => state.drawerTitle,
-  // getDrawerDescription: (state: any) => state.drawerDescription,
-  getKokoko: (state: any) => state.ololo,
-};
+
 const mutations = {
-  REMOVE_TASK(state: any, task: any) {
-    const result = state.task.filter((obj: any) => obj.id !== String(task));
-    state.task = result;
+  CREATE_LISTE_NOTE(state: any, payload: ITask[]) {
+    state.tasks = payload;
   },
-  EDIT_TASK(state: any, value: any) {
-    value ? state.task.find((obj: any) => obj.id === value) : null;
+  CREATE_TASK(state: any, payload: ITask) {
+    state.tasks = [payload, ...state.tasks];
+    saveToLS(state);
+  },
+  REMOVE_TASK(state: any, id: string) {
+    state.tasks = state.tasks.filter((task: ITask) => task.id !== id);
+    saveToLS(state);
   },
   REMOVE_ALL(state: any) {
-    state.task = [];
+    state.tasks = [];
+    saveToLS(state);
   },
-  SET_TASK(state: any, task: any) {
-    state.task = task;
+  IS_SHOW_MODAL(state: any, isShow: boolean) {
+    state.isShowModal = isShow;
   },
-  // SET_TITLE(state: any, { id, data }) {
-  //   state.task.forEach((element: any) => {
-  //     if (element.id === id) {
-  //       element.title = data;
-  //     }
-  //   });
-  // },
-  GET_TITLE(state:any) { (id: any) } => {
-    state.task.find((element: any) => element.id === id)
-  };
+  EDIT_TASK(state: any, id: string) {
+    state.editTask = state.tasks.find((task: ITask) => task.id === id) || null;
+  },
+  SAVE_EDIT(state: any, task: ITask) {
+    state.tasks = state.tasks.map((currentTask: ITask) =>
+      currentTask.id === task.id ? task : currentTask
+    );
+    saveToLS(state);
+  },
 };
 
 const actions = {
-  actionRemoveTask(context: any, task: any) {
-    context.commit("REMOVE_TASK", task);
+  actionCreateTaskList({ commit }: any, payload: ITask[]) {
+    commit("CREATE_LISTE_NOTE", payload);
   },
-  actionEditTask(context: any, task: any) {
-    context.commit("EDIT_TASK", task);
+  actionCreateTask({ commit }: any, payload: ITask) {
+    commit("CREATE_TASK", payload);
   },
-  actionSaveTask(context: any, task: any) {
-    context.commit("SET_TASK", task);
+
+  actionToggleModal({ commit }: any, payload: boolean) {
+    commit("IS_SHOW_MODAL", payload);
   },
-  actionRemoveAll(context: any) {
-    context.commit("REMOVE_ALL");
+  actionRemoveAll({ commit }: any) {
+    commit("REMOVE_ALL");
   },
-  actionSetTitle(context: any, obj: any) {
-    context.commit("SET_TITLE", obj);
+  actionRemoveTask({ commit }: any, id: string) {
+    commit("REMOVE_TASK", id);
   },
-  actionGetTitle(context: any) {
-    context.commit("GET_TITLE");
+  actionEditTask({ commit }: any, id: string) {
+    commit("EDIT_TASK", id);
+  },
+  actionSaveEdit({ commit }: any, task: ITask) {
+    commit("SAVE_EDIT", task);
+  },
+  actionClearEditTask({ commit }: any) {
+    commit("EDIT_TASK", null);
   },
 };
 
@@ -62,5 +72,4 @@ export const tasks = {
   state,
   mutations,
   actions,
-  getters,
 };

@@ -1,16 +1,12 @@
 <template>
   <div class="drawer-mask">
-    <div class="draver__overlay" @click="$emit('close')"></div>
+    <div class="draver__overlay" @click="onClose"></div>
     <div class="drawer-container">
       <div class="drawer-body">
-        <CreateEditForm
-          :title="data ? data.title : ''"
-          :description="data ? data.description : ''"
-          :onSubmit="data ? editAction : addAction"
-        />
+        <CreateEditForm :data="editTask" />
       </div>
       <div class="drawer-footer">
-        <button class="close-btn" @click="$emit('close')">X</button>
+        <button class="close-btn" @click="onClose">X</button>
       </div>
     </div>
   </div>
@@ -19,14 +15,21 @@
 <script lang="ts">
 import CreateEditForm from "./CreateEditForm.vue";
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { Action, namespace } from "vuex-class";
+import { mapState } from "vuex";
+
+const tasks = namespace("tasks");
 
 @Component({
   components: { CreateEditForm },
+  computed: {
+    ...mapState("tasks", ["editTask"]),
+  },
 })
 export default class Drawer extends Vue {
-  @Prop() addAction!: Function;
-  @Prop() editAction!: Function;
-  @Prop() data!: Object;
+  onClose() {
+    this.$emit("close");
+  }
 }
 </script>
 

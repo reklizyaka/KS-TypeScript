@@ -7,143 +7,56 @@
       </div>
       <div class="task-board">
         <div class="task-card">
-          <ListNotes
-            :notes="notes"
-            :onEdit="setEditMode"
-            v-model="currentTitle"
-            :onRemove="remove"
-          />
+          <ListNotes />
         </div>
-        <button class="add-btn" @click="toggleModal(true)">+</button>
+        <button class="add-btn" @click="actionToggleModal(true)">+</button>
       </div>
-      <Drawer
-        :addAction="add"
-        :editAction="editComplete"
-        :data="editNote"
-        v-if="showModal"
-        @close="toggleModal(false)"
-      />
+      <Drawer v-if="isShowModal" @close="actionToggleModal(false)" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import shortid from "shortid";
-
-import Drawer from "../components/Drawer.vue";
-import ListNotes from "@/components/ListNotes.vue";
-
 import { Vue, Component } from "vue-property-decorator";
 import { Getter, Action, namespace } from "vuex-class";
+import { mapState } from "vuex";
+import shortid from "shortid";
+
+import Drawer from "@/components/Drawer.vue";
+import ListNotes from "@/components/ListNotes.vue";
 
 const tasks = namespace("tasks");
 
-interface Note {
-  id?: any;
-  title?: string;
-  description?: string;
-}
-
 @Component({
   components: { Drawer, ListNotes },
+  computed: {
+    ...mapState("tasks", ["isShowModal"]),
+  },
 })
 export default class Home extends Vue {
-  public notes: Note[];
-  public showModal: boolean;
-  public editNote: Note | null | undefined;
-  public userEmail: string;
-  public parsedString: string;
+  private userEmail: string;
 
-  @tasks.Action actionSaveTask: any;
-  @tasks.Action actionRemoveTask: any;
+  @tasks.Action actionCreateTaskList: any;
   @tasks.Action actionRemoveAll: any;
-  @tasks.Action actionEditTask: any;
-  @tasks.Getter getKokoko: any;
-  @tasks.Getter GET_TASK: any;
-  @tasks.Action actionGetTitle: any;
-  @tasks.Action actionSetTitle: any;
+  @tasks.Action actionToggleModal: any;
 
   constructor() {
     super();
-    this.showModal = false;
     this.userEmail = localStorage.getItem("login") || "";
-    this.parsedString = localStorage.getItem("notes") || "";
-    this.notes = this.parsedString ? JSON.parse(this.parsedString) : [];
   }
 
   public created() {
     if (!localStorage.getItem("login")) {
       this.$router.push({ path: "/login", name: "login" });
     }
+    this.actionCreateTaskList(
+      JSON.parse(localStorage.getItem("notes") || "[]")
+    );
   }
 
-  get currentTitle() {
-    return this.actionGetTitle(this.id).title;
-  }
-  set currentTitle(value: any) {
-    const obj = {
-      id: shortid(),
-      data: value,
-    };
-    this.actionSetTitle(obj);
-  }
-
-  public add(note: object) {
-    const { title, description }: any = note;
-    const newNote: Note = {
-      id: shortid(),
-      title,
-      description,
-    };
-
-    this.notes.push(newNote);
-    this.GET_TASK;
-    console.log(this.GET_TASK);
-    console.log(this.getKokoko);
-    this.actionSaveTask(this.notes);
-    this.GET_TASK;
-
-    this.save();
-    this.toggleModal(false);
-  }
-  public setEditMode(value: string | null) {
-    this.toggleModal(true);
-    this.editNote = value ? this.notes.find(({ id }) => id === value) : null;
-  }
-  public editComplete(note: object) {
-    if (this.editNote) {
-      const id = this.editNote.id;
-      const index = this.getNoteById(id);
-      this.notes.splice(index, 1, { id, ...note });
-      this.setEditMode(null);
-      this.GET_TASK;
-      this.actionEditTask(index, note);
-      console.log(note);
-
-      this.save();
-      this.toggleModal(false);
-    }
-  }
-  public remove(id: string) {
-    const index = this.getNoteById(id);
-    this.notes.splice(index, 1);
-    this.actionRemoveTask(index, 1);
-    this.save();
-  }
-  public save() {
-    localStorage.setItem("notes", JSON.stringify(this.notes));
-  }
   public logout() {
-    this.actionRemoveAll(this.notes);
-    localStorage.removeItem("login");
-    localStorage.removeItem("notes");
+    this.actionRemoveAll();
     this.$router.push({ path: "/login", name: "login" });
-  }
-  public getNoteById(id: string) {
-    return this.notes.findIndex(({ id: noteId }) => noteId === id);
-  }
-  public toggleModal(value: boolean) {
-    this.showModal = value;
   }
 }
 </script>

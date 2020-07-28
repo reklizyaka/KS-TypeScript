@@ -1,34 +1,64 @@
 <template>
-  <form @submit.prevent="onSubmit(note)">
-    <label for="title" class="label">Title</label>
-    <input v-model="note.title" type="text" />
-    <label for="textarea" class="label">Description</label>
-    <textarea v-model="note.description"></textarea>
+  <form @submit.prevent="onSubmit()">
+    <label class="label">
+      <span>Title</span>
+      <input v-model="title" type="text" />
+    </label>
+    <label class="label">
+      <span>Description</span>
+      <textarea v-model="description"></textarea>
+    </label>
     <button>Submit</button>
   </form>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { Getter, Action, namespace } from "vuex-class";
+import { ITask } from "../interfaces";
+import shortid from "shortid";
+
+const tasks = namespace("tasks");
 
 @Component({})
 export default class CreateEditForm extends Vue {
-  @Prop() title!: String;
-  @Prop() description!: String;
-  @Prop() onSubmit!: Function;
+  @Prop() data: ITask | null | undefined;
+  title: string;
+  description: string;
 
-  public note: object;
-  // public title: string;
-  // public description: string;
+  @tasks.Action actionCreateTask: any;
+  @tasks.Action actionToggleModal: any;
+  @tasks.Action actionSaveEdit: any;
+  @tasks.Action actionClearEditTask: any;
 
   constructor() {
     super();
-    this.note = {
-      title: this.title,
-      description: this.description,
-    };
-    // this.title = "";
-    // this.description = "";
+    this.title = this.data?.title || "";
+    this.description = this.data?.description || "";
+  }
+
+  public onSubmit() {
+    const { title, description } = this;
+
+    if (!this.data) {
+      this.actionCreateTask({
+        title,
+        id: shortid(),
+        description,
+      });
+    } else {
+      const { id = "" }: any = this.data;
+
+      this.actionSaveEdit({
+        title,
+        description,
+        id,
+      });
+    }
+    this.actionClearEditTask();
+    this.actionToggleModal(false);
+
+    // this.GET_EDIT ? this.actionSetEdit() : this.actionCreateTask();
   }
 }
 </script>
