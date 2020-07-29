@@ -34,24 +34,19 @@ const tasks = namespace("tasks");
   },
 })
 export default class Home extends Vue {
-  private userEmail: string;
+  private userEmail!: string;
 
   @tasks.Action actionCreateTaskList: any;
   @tasks.Action actionRemoveAll: any;
   @tasks.Action actionToggleModal: any;
 
-  constructor() {
-    super();
-    this.userEmail = localStorage.getItem("login") || "";
-  }
-
   public created() {
     if (!localStorage.getItem("login")) {
       this.$router.push({ path: "/login", name: "login" });
     }
-    this.actionCreateTaskList(
-      JSON.parse(localStorage.getItem("notes") || "[]")
-    );
+    this.userEmail = localStorage.getItem("login") || "";
+
+    this.actionCreateTaskList(JSON.parse("[]"));
   }
 
   public logout() {

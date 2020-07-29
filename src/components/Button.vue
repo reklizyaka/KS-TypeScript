@@ -1,5 +1,7 @@
 <template>
-  <button @click="callback($event)"></button>
+  <button @click="callback($event)" class="button">
+    <slot></slot>
+  </button>
 </template>
 
 <script lang="ts">
@@ -13,10 +15,24 @@ export default class Button extends Vue {
 </script>
 
 <style scoped>
-button {
-  padding: 4px 12px;
+.button {
+  padding: 0;
   border: none;
   background: transparent;
   cursor: pointer;
+}
+
+.edit-btn {
+  margin: 5px 0 0 130px;
+}
+
+.remove-btn {
+  margin: 0 10px 0 15px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  padding: 5px;
 }
 </style>

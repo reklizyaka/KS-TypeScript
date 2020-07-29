@@ -38,17 +38,6 @@ export default class Drawer extends Vue {
   margin: 20px 0;
 }
 
-input {
-  width: 80%;
-  font-size: 14px;
-  margin: 0 0.5em;
-  border-radius: 2em;
-  padding: 0.75em 1.5em;
-  background: none;
-  border: #e3e3e3 1px solid;
-  transition: border 250ms ease-out;
-}
-
 .drawer-mask {
   position: fixed;
   z-index: 100;
@@ -112,22 +101,6 @@ input {
   color: #000;
 }
 
-.add-btn {
-  text-align: center;
-  height: 40px;
-  margin-top: 30px;
-}
-
-.add-task-btn {
-  width: 120px;
-  height: 100%;
-  border-radius: 6px;
-  box-shadow: 0px 6px 12px 0px rgba(40, 43, 49, 0.08);
-  font-size: 17px;
-  font-weight: 700;
-  color: #000;
-}
-
 .drawer-footer {
   text-align: center;
   box-sizing: border-box;
@@ -143,18 +116,5 @@ input {
   padding: 0 10px;
   background-color: #fff;
   border: 1px solid #e7e8ea;
-}
-
-.drawwer-container {
-  position: relative;
-  margin-top: 70px;
-  height: 100%;
-}
-
-.drawer-header,
-.drawer-body {
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0;
 }
 </style>

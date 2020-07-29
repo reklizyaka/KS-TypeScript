@@ -1,11 +1,9 @@
 const state = {
   mail: "",
-  ololo: "kokoko",
 };
 
 const getters = {
   getMail: (state: any) => state.mail,
-  getOlolo: (state: any) => state.ololo,
 };
 
 const actions = {

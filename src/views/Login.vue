@@ -2,11 +2,7 @@
   <div class="login">
     <div class="wrapper">
       <div class="login-card">
-        <img
-          class="avatar"
-          src="https://i.ya-webdesign.com/images/drapery-clip-matt-black-5.png"
-          alt="user-icon"
-        />
+        <img class="avatar" src="../assets/avatar.png" alt="user-icon" />
         <form class="log-form" @submit.prevent="checkForm" novalidate="true">
           <div class="form-inner-wr">
             <div class="input-wr">
@@ -129,11 +125,9 @@ export default Login;
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 1px;
-  /* color: #4fc08d;
-  border: 0.5px solid #4fc08d; */
-
   transition: 250ms ease-out;
 }
+
 .error {
   color: red;
   font-size: 16px;
@@ -148,9 +142,6 @@ export default Login;
   .login-card {
     width: 270px;
     height: 390px;
-  }
-  .button-wr {
-    margin-top: 0;
   }
   .message {
     margin: 10px;

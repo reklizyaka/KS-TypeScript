@@ -1,8 +1,5 @@
 import { ITask } from "@/interfaces";
 
-const saveToLS = (state: any) =>
-  localStorage.setItem("notes", JSON.stringify(state.tasks));
-
 const state = {
   tasks: [],
   isShowModal: false,
@@ -15,15 +12,12 @@ const mutations = {
   },
   CREATE_TASK(state: any, payload: ITask) {
     state.tasks = [payload, ...state.tasks];
-    saveToLS(state);
   },
   REMOVE_TASK(state: any, id: string) {
     state.tasks = state.tasks.filter((task: ITask) => task.id !== id);
-    saveToLS(state);
   },
   REMOVE_ALL(state: any) {
     state.tasks = [];
-    saveToLS(state);
   },
   IS_SHOW_MODAL(state: any, isShow: boolean) {
     state.isShowModal = isShow;
@@ -35,7 +29,6 @@ const mutations = {
     state.tasks = state.tasks.map((currentTask: ITask) =>
       currentTask.id === task.id ? task : currentTask
     );
-    saveToLS(state);
   },
 };
 
