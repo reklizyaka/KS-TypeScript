@@ -57,10 +57,6 @@ export default class Home extends Vue {
 </script>
 
 <style scoped>
-body {
-  background-color: lavender;
-}
-
 .main {
   max-width: 1200px;
   margin: 0 auto;

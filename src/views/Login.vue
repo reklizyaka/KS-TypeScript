@@ -22,7 +22,6 @@
 </template>
 
 <script lang="ts">
-//
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import { Getter, Action, namespace } from "vuex-class";
 
@@ -30,8 +29,8 @@ const login = namespace("login");
 
 @Component({})
 class Login extends Vue {
-  public errors: string[];
-  public email: string;
+  public errors!: string[];
+  public email!: string;
 
   @login.Action actionSaveMail: any;
   created() {
