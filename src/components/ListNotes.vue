@@ -1,6 +1,6 @@
 <template>
   <ol class="task-list">
-    <li v-bind:key="task.id" v-for="task in tasks">
+    <li class="task-item" v-bind:key="task.id" v-for="task in tasks">
       <section class="task-btns">
         <Button @click="onEdit(task.id)" class="edit-btn">
           <img class="icon" src="../../public/edit.png" alt="Edit" />
@@ -60,14 +60,23 @@ hr {
   padding: 15px;
 }
 
-ol {
+.task-list {
   display: flex;
   width: 100%;
   height: 50px;
-  margin: 0 0;
+  height: 100%;
+  max-width: 1013px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
-ol > li {
+.task-item {
+  margin: 0;
+  padding: 0;
   background: transparent;
   min-width: 50px;
   width: 25%;

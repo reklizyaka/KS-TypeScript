@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ololo">
     <div class="main">
       <div class="header">
         <p class="user">{{ userEmail }}</p>
@@ -57,6 +57,10 @@ export default class Home extends Vue {
 </script>
 
 <style scoped>
+body {
+  background-color: lavender;
+}
+
 .main {
   max-width: 1200px;
   margin: 0 auto;
@@ -124,21 +128,5 @@ export default class Home extends Vue {
 .task-card {
   width: 100%;
   height: 100%;
-}
-
-.task-list {
-  height: 100%;
-  max-width: 1013px;
-  margin: 0 auto;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-
-.task-list > li {
-  margin: 0;
-  padding: 0;
 }
 </style>

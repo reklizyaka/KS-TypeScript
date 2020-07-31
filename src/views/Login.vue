@@ -34,13 +34,11 @@ class Login extends Vue {
   public email: string;
 
   @login.Action actionSaveMail: any;
-  created() {}
-
-  constructor() {
-    super();
+  created() {
     this.errors = [];
     this.email = "";
   }
+
   public checkForm() {
     this.errors = [];
     if (!this.email) {
