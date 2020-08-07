@@ -35,14 +35,16 @@ const tasks = namespace("tasks");
 export default class ListNotes extends Vue {
   @tasks.Action actionRemoveTask: any;
   @tasks.Action actionEditTask: any;
+  @tasks.Action requestEditTask: any;
+  @tasks.Action requestDeleteTask: any;
   @tasks.Action actionToggleModal: any;
 
   onRemove(id: string) {
-    this.actionRemoveTask(id);
+    this.requestDeleteTask(id);
   }
 
   onEdit(id: string) {
-    this.actionEditTask(id);
+    this.requestEditTask(id);
     this.actionToggleModal(true);
   }
 }

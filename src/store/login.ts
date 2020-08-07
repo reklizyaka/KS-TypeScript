@@ -7,8 +7,8 @@ const getters = {
 };
 
 const actions = {
-  actionSaveMail(context: any, mail: any) {
-    context.commit("SET_MAIL", mail);
+  actionSaveMail({ commit }: any, mail: any) {
+    commit("SET_MAIL", mail);
   },
 };
 

@@ -1,9 +1,16 @@
 import { ITask } from "@/interfaces";
+import axios from "axios";
 
 const state = {
   tasks: [],
   isShowModal: false,
   editTask: null,
+};
+
+const getters = {
+  TODOS: (state: any) => {
+    return state.todos;
+  },
 };
 
 const mutations = {
@@ -39,7 +46,6 @@ const actions = {
   actionCreateTask({ commit }: any, payload: ITask) {
     commit("CREATE_TASK", payload);
   },
-
   actionToggleModal({ commit }: any, payload: boolean) {
     commit("IS_SHOW_MODAL", payload);
   },
@@ -58,11 +64,65 @@ const actions = {
   actionClearEditTask({ commit }: any) {
     commit("EDIT_TASK", null);
   },
+
+  // requests
+  requestGetAllTasks({ commit }: any, mail: string) {
+    const url = "https://raysael.herokuapp.com/todo?author=";
+    axios
+      .get(`${url}${mail}`)
+      .then((response) => {
+        const tasksArr = response.data;
+        tasksArr.forEach((payload: ITask[]) => {
+          commit("CREATE_LISTE_NOTE", payload);
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
+
+  requestAddNewTask({ commit }: any, payload: ITask) {
+    const url = "https://raysael.herokuapp.com/todo";
+    axios
+      .post(`${url}`, JSON.stringify(payload), {
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          // "Access-Control-Allow-Origin": "*",
+        },
+      })
+      .then((response) => {
+        commit("CREATE_TASK", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  requestEditTask(taskObj: any, id: any) {
+    const editTask = state.tasks.find((task: ITask) => task.id === id) || null;
+    const url = "https://raysael.herokuapp.com/todo/";
+    axios.patch(`${url}${editTask}`, taskObj).catch((err) => {
+      console.error(err);
+    });
+  },
+  requestDeleteTask({ commit }: any, id: any) {
+    const url = "https://raysael.herokuapp.com/todo/";
+    axios
+      .delete(`${url}${id}`)
+      .then((response) => {
+        if (response.statusText == "OK") {
+          commit("REMOVE_TASK", id);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
 };
 
 export const tasks = {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions,
 };

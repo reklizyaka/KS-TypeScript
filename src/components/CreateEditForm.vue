@@ -17,38 +17,45 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 import { Getter, Action, namespace } from "vuex-class";
 import { ITask } from "../interfaces";
 import shortid from "shortid";
+// import { requests } from "@/store/requests";
 
 const tasks = namespace("tasks");
+const login = namespace("login");
+// const requests = namespace("requests");
 
 @Component({})
 export default class CreateEditForm extends Vue {
   @Prop() data: ITask | null | undefined;
+  author!: string;
   title!: string;
   description!: string;
 
-  @tasks.Action actionCreateTask: any;
+  @tasks.Action requestAddNewTask: any;
   @tasks.Action actionToggleModal: any;
   @tasks.Action actionSaveEdit: any;
   @tasks.Action actionClearEditTask: any;
+  @tasks.Action actionEditTask: any;
+  @login.Getter getMail: any;
 
   created() {
+    this.author = this.getMail;
     this.title = this.data?.title || "";
     this.description = this.data?.description || "";
   }
 
   public onSubmit() {
     const { title, description } = this;
-
     if (!this.data) {
-      this.actionCreateTask({
-        title,
+      this.requestAddNewTask({
+        author: this.getMail,
         id: shortid(),
+        title,
         description,
       });
     } else {
       const { id = "" }: any = this.data;
 
-      this.actionSaveEdit({
+      this.actionEditTask({
         title,
         description,
         id,

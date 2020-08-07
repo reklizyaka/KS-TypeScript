@@ -39,12 +39,22 @@ export default class Home extends Vue {
   @tasks.Action actionCreateTaskList: any;
   @tasks.Action actionRemoveAll: any;
   @tasks.Action actionToggleModal: any;
+  @tasks.Action requestGetAllTasks: any;
 
   public created() {
     if (!localStorage.getItem("login")) {
       this.$router.push({ path: "/login", name: "login" });
     }
     this.userEmail = localStorage.getItem("login") || "";
+    console.log(this.userEmail);
+    console.log(this.requestGetAllTasks(this.userEmail));
+
+    this.requestGetAllTasks(this.userEmail);
+    console.log(this.requestGetAllTasks(this.userEmail));
+
+    // let mail = JSON.parse(this.userEmail);
+    // this.requestGetAllTasks(this.userEmail);
+    console.log(this.requestGetAllTasks);
 
     this.actionCreateTaskList(JSON.parse("[]"));
   }
