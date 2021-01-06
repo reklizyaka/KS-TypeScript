@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@types/shortid": "0.0.29",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-typescript": "^1.0.2",
     "core-js": "^3.6.5",
     "shortid": "^2.2.15",
